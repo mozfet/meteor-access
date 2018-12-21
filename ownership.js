@@ -1,4 +1,5 @@
-import Access from './access'
+import { _ } from 'meteor/underscore'
+import { Access } from './access'
 
 /**
  * Recursively transfer a component and decendants to a user.
@@ -61,6 +62,6 @@ const transferOwnership = (collectionName, documentId, userId) => {
   }
 }
 
-export default {
+export const Ownership = {
   transferOwnership: transferOwnership
 }

@@ -1,6 +1,6 @@
 Package.describe({
   name: 'mozfet:access',
-  version: '0.0.2',
+  version: '0.0.3',
   summary: 'Common permissions, user management, access control and document ownership.',
   git: 'https://github.com/mozfet/meteor-access.git',
   documentation: 'README.md'
@@ -12,9 +12,12 @@ Npm.depends({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.8.0.1');
-  api.use(['ecmascript', 'underscore']);
-  api.use('dburles:mongo-collection-instances')
-  api.addFiles('./imports/api/access/index.js');
+  api.use([
+    'ecmascript',
+    'underscore',
+    'dburles:mongo-collection-instances@0.3.5'
+  ]);
+  api.mainModule('./main.js');
 });
 
 // Package.onTest(function(api) {

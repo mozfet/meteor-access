@@ -1,3 +1,4 @@
+import { _ } from 'meteor/underscore'
 import Guest from './guest'
 
 /**
@@ -219,7 +220,7 @@ const noAccess = {
   remove: isNone,
 }
 
-export default {
+export const Access = {
   userLabel,
   userEmail,
   findUserByEmail,
