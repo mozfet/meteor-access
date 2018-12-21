@@ -132,7 +132,7 @@ Meteor.startup(() => {
 })
 
 // export polymrphic javascript api as object of functions
-export default {
+export const Guest = {
   create: createGuest,
   destroy: destroyGuest,
   signin: signinAsGuest,

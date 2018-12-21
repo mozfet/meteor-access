@@ -1,6 +1,6 @@
 Package.describe({
   name: 'mozfet:access',
-  version: '0.0.3',
+  version: '0.0.4',
   summary: 'Common permissions, user management, access control and document ownership.',
   git: 'https://github.com/mozfet/meteor-access.git',
   documentation: 'README.md'

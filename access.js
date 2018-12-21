@@ -1,5 +1,4 @@
 import { _ } from 'meteor/underscore'
-import Guest from './guest'
 
 /**
  * Returns true of user is admin. If no id is provided the current meteor user
@@ -229,8 +228,6 @@ export const Access = {
   isAdmin,
   isOwner,
   isHandler,
-  signinAsGuest: Guest.sigin,
-  isGuest: Guest.isGuest,
   isAny,
   isAdminOrOwner,
   isUser,
