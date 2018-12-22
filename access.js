@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 import { _ } from 'meteor/underscore'
 
 /**
@@ -7,7 +8,16 @@ import { _ } from 'meteor/underscore'
  * @returns {Boolean} true if user is admin
  **/
 const isAdmin = (userId) => {
-  const id = userId?userId:Meteor.userId()
+  let id
+  if (userId) {
+    id = userId
+  }
+  else if (_.isFunction(Meteor.userId)) {
+    id = Meteor.userId()
+  }
+  else {
+    return false
+  }
   return Roles.userIsInRole(id, ['admin'])
 }
 
