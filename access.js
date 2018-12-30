@@ -27,6 +27,9 @@ const isAdmin = (userId) => {
  * @param {object} doc - the document being validated
  */
 const isOwner = (userId, doc) => {
+  if (!userId || !doc) {
+    return false
+  }
   const id = userId?userId:Meteor.userId()
   return doc && (doc.ownerId === id)
 }
@@ -129,9 +132,9 @@ const normaliseUser = (user) => {
  **/
 const userEmail = (user) => {
   user = normaliseUser(user)
-  const usernamePasswordEmail = user.emails?user.emails[0].address:undefined
+  const usernamePasswordEmail = user&&user.emails?user.emails[0].address:undefined
   const biocryptologyEmail =
-      user.services&&
+      user&&user.services&&
       user.services.biocryptology&&
       user.services.biocryptology.email?
       user.services.biocryptology.email:undefined
