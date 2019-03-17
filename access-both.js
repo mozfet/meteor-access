@@ -101,7 +101,8 @@ const userLabel = (user) => {
 const findUserByEmail = email => {
   const user = Meteor.users.findOne({$or: [
     {'emails.address': email},
-    {'services.biocryptology.email': email}
+    {'services.biocryptology.email': email},
+    {'services.facebook.email': email}
   ]})
   Log.log(['debug', 'access'], `Found user for ${email}:`, user)
   return user
@@ -140,8 +141,69 @@ const userEmail = (user) => {
       user.services.biocryptology&&
       user.services.biocryptology.email?
       user.services.biocryptology.email:undefined
-  const email = usernamePasswordEmail||biocryptologyEmail
+  const facebookEmail = user&&user.services&&
+      user.services.facebook&&
+      user.services.facebook.email?
+      user.services.facebook.email:undefined
+  const email = usernamePasswordEmail||biocryptologyEmail||facebookEmail
   return email
+}
+
+/**
+ * Get user first name
+ * @param {String|Object} user - user id or document
+ * @returns {String} first name of user
+ **/
+const userFirstName = (user) => {
+  user = normaliseUser(user)
+  const usernamePasswordFirstName = user&&user.firstName?user.firstName
+      :undefined
+  const biocryptologyFirstName =
+      user&&user.services&&
+      user.services.biocryptology&&
+      user.services.biocryptology.first_name?
+      user.services.biocryptology.first_name:undefined
+  const facebookFirstName = user&&user.services&&
+      user&&user.services&&
+      user.services.facebook&&
+      user.services.facebook.first_name?
+      user.services.facebook.first_name:undefined
+  const firstName = usernamePasswordFirstName||biocryptologyFirstName||
+      facebookFirstName
+  return firstName
+}
+
+/**
+ * Get user last name
+ * @param {String|Object} user - user id or document
+ * @returns {String} last name of user
+ **/
+const userLastName = (user) => {
+  user = normaliseUser(user)
+  const usernamePasswordLastName = user&&user.lastName?user.lastName
+      :undefined
+  const biocryptologyLastName =
+      user&&user.services&&
+      user.services.biocryptology&&
+      user.services.biocryptology.last_name?
+      user.services.biocryptology.last_name:undefined
+  const facebookLastName = user&&user.services&&
+      user&&user.services&&
+      user.services.facebook&&
+      user.services.facebook.last_name?
+      user.services.facebook.last_name:undefined
+  const lastName = usernamePasswordLastName||biocryptologyLastName||
+      facebookLastName
+  return lastName
+}
+
+/**
+ * Get user language
+ * @param {String|Object} user - user id or document
+ * @returns {String} language of user
+ **/
+const userLanguage = user => {
+  return user.profile&&user.profile.language?user.profile.language:'en-US'
 }
 
 /**
@@ -149,7 +211,6 @@ const userEmail = (user) => {
  * @param {}  -
  * @returns {}
  **/
-
 const isUserEmailVerified = (user, email) => {
   user = normaliseUser(user)
 
@@ -320,9 +381,13 @@ export {
   noAccess,
   transferOwnership
 }
+
 export const Access = {
   userLabel,
   userEmail,
+  userFirstName,
+  userLastName,
+  userLanguage,
   findUserByEmail,
   isUserEmailVerified,
   normaliseUser,

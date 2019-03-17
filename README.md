@@ -1,6 +1,7 @@
 # Meteor Access
 
 Making user management and access to data simpler on Meteor.
+Works with accounts-password, accounts-biocryptology and accounts-facebook.
 
 ## Polymorphic API
 - User management
@@ -21,4 +22,5 @@ const isCurrentUserAdmin = Access.isAdmin()
 
 const user = Meteor.user()
 const isUserAdmin = Access.isAdmin(user)
+const email = Access.userEmail(user)
 ```

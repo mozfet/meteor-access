@@ -1,6 +1,6 @@
 Package.describe({
   name: 'mozfet:access',
-  version: '0.0.9',
+  version: '0.0.10',
   summary: 'Common permissions, user management, access control and document ownership.',
   git: 'https://github.com/mozfet/meteor-access.git',
   documentation: 'README.md'
@@ -17,6 +17,7 @@ Package.onUse(function(api) {
   api.use([
     'ecmascript',
     'underscore',
+    'accounts-base',
     'dburles:mongo-collection-instances@0.3.5',
     'alanning:roles@1.2.16'
   ]);
