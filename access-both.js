@@ -57,6 +57,17 @@ const isUser = (userId) => {
    return doc && doc.handlers && doc.handlers.includes(id)
  }
 
+ /**
+  * Get Username
+  * @param {}  -
+  * @returns {}
+  **/
+  const userUsername = (user) => {
+    user = normaliseUser(user)
+    Log.log(['debug', 'access'], `userUsername for:`, user)
+    return user.username?user.username:undefined
+  }
+
 /**
  * Get an human friendly label for a user.
  * Preferably username or email.
@@ -104,7 +115,18 @@ const findUserByEmail = email => {
     {'services.biocryptology.email': email},
     {'services.facebook.email': email}
   ]})
-  Log.log(['debug', 'access'], `Found user for ${email}:`, user)
+  // Log.log(['debug', 'access'], `Found user for ${email}:`, user)
+  return user
+}
+
+/**
+ * Find a user by username
+ * @param {}  -
+ * @returns {}
+ **/
+const findUserByUsername = username => {
+  const user = Meteor.users.findOne({username})
+  Log.log(['debug', 'access'], `Found user for ${username}:`, user)
   return user
 }
 
@@ -116,7 +138,7 @@ const findUserByEmail = email => {
  **/
 const normaliseUser = (user) => {
   if (_.isUndefined(user)) {
-    Log.log(['error', 'access'],'Cannot find email for undefined user.')
+    Log.log(['error', 'access'],'User must be defined in order to normalise.')
   }
   if (_.isString(user)) {
     const _user = Meteor.users.findOne(user)
@@ -145,7 +167,12 @@ const userEmail = (user) => {
       user.services.facebook&&
       user.services.facebook.email?
       user.services.facebook.email:undefined
-  const email = usernamePasswordEmail||biocryptologyEmail||facebookEmail
+  const linkedInEmail = user&&user.services&&
+      user.services.linkedin&&
+      user.services.linkedin.email?
+      user.services.linkedin.email:undefined
+  const email = usernamePasswordEmail || biocryptologyEmail || facebookEmail ||
+      linkedInEmail
   return email
 }
 
@@ -168,8 +195,14 @@ const userFirstName = (user) => {
       user.services.facebook&&
       user.services.facebook.first_name?
       user.services.facebook.first_name:undefined
-  const firstName = usernamePasswordFirstName||biocryptologyFirstName||
-      facebookFirstName
+  const linkedInFirstName = user&&user.services&&
+      user&&user.services&&
+      user.services.linkedin&&
+      user.services.linkedin.firstName&&
+      user.services.linkedin.firstName.localized?
+      user.services.linkedin.firstName.localized[0]:undefined
+  const firstName = usernamePasswordFirstName || biocryptologyFirstName ||
+      facebookFirstName || linkedInFirstName
   return firstName
 }
 
@@ -192,8 +225,14 @@ const userLastName = (user) => {
       user.services.facebook&&
       user.services.facebook.last_name?
       user.services.facebook.last_name:undefined
-  const lastName = usernamePasswordLastName||biocryptologyLastName||
-      facebookLastName
+  const linkedInLastName = user&&user.services&&
+      user&&user.services&&
+      user.services.linkedin&&
+      user.services.linkedin.lastName&&
+      user.services.linkedin.lastName.localized?
+      user.services.linkedin.lastName.localized[0]:undefined
+  const lastName = usernamePasswordLastName || biocryptologyLastName ||
+      facebookLastName || linkedInLastName
   return lastName
 }
 
@@ -300,6 +339,12 @@ const noAccess = {
   remove: isNone,
 }
 
+const noCreateAdminOwnerUpdateNoRemove = {
+  insert: isNone,
+  update: isAdminOrOwner,
+  remove: isNone
+}
+
 /**
  * Recursively transfer a component and decendants to a user.
  * Component ownership is validated before transferring.
@@ -385,10 +430,12 @@ export {
 export const Access = {
   userLabel,
   userEmail,
+  userUsername,
   userFirstName,
   userLastName,
   userLanguage,
   findUserByEmail,
+  findUserByUsername,
   isUserEmailVerified,
   normaliseUser,
   isAdmin,
@@ -400,6 +447,7 @@ export const Access = {
   anyCreateAdminOwnersUpdateRemove,
   anyCreateAdminOwnersUpdateAdminRemove,
   adminCreateUpdateRemove,
+  noCreateAdminOwnerUpdateNoRemove,
   anyInsertAdminUpdateRemove,
   noAccess,
   transferOwnership
