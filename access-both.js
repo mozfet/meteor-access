@@ -183,8 +183,8 @@ const userEmail = (user) => {
  **/
 const userFirstName = (user) => {
   user = normaliseUser(user)
-  const usernamePasswordFirstName = user&&user.firstName?user.firstName
-      :undefined
+  const usernamePasswordFirstName = user&&user.profile&&user.profile.firstName?
+      user.profile.firstName:undefined
   const biocryptologyFirstName =
       user&&user.services&&
       user.services.biocryptology&&
@@ -213,8 +213,8 @@ const userFirstName = (user) => {
  **/
 const userLastName = (user) => {
   user = normaliseUser(user)
-  const usernamePasswordLastName = user&&user.lastName?user.lastName
-      :undefined
+  const usernamePasswordLastName = user&&user.profile&&user.profile.lastName?
+      user.profile.lastName:undefined
   const biocryptologyLastName =
       user&&user.services&&
       user.services.biocryptology&&
