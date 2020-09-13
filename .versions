@@ -1,5 +1,5 @@
 accounts-base@1.7.0
-alanning:roles@2.0.1
+alanning:roles@3.2.3
 allow-deny@1.1.0
 babel-compiler@7.5.3
 babel-runtime@1.5.0
@@ -44,7 +44,7 @@ mongo@1.10.0
 mongo-decimal@0.1.1
 mongo-dev-server@1.1.0
 mongo-id@1.0.7
-mozfet:access@0.2.0
+mozfet:access@0.2.1
 npm-mongo@3.8.0
 observe-sequence@1.0.16
 ordered-dict@1.1.0
